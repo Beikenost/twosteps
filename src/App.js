@@ -121,7 +121,7 @@ function App() {
       <div id="ID_Game">
           <div className="App-header" id="info"></div>
           <div className="App-header" id="char">"study:" {current.toUpperCase()}</div>
-          <div className="App-header" id="input">"count:" {input.toUpperCase()}</div>
+          <div className="App-header" id="input">"count dracula:" {input.toUpperCase()}</div>
           <div className="App-header" id="score">{score}</div>
       </div>
       <div id="ID_GameOver">
