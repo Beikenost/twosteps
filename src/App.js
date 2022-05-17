@@ -3,35 +3,19 @@ import './App.css';
 import { useState, useEffect } from 'react';
 
 /*
-const randomize = (b1, chars) => {
-  
-  const newRand = Math.floor(Math.random() * chars.length);
-  
-  const newChars = chars.filter((i)=>(i !== b1))
+function OnLoad(){
+  console.log("GG LOGGED");
 
-  if (newRand < 0){
-    newRand = newChars.length - 1;
-    console.log("ROLLOVER UP");
-  }
-  else if (newRand > newChars.length){
-    newRand = 0;
-    console.log("ROLLOVER DOWN");
-  }
-
-  return newChars[newRand];
-} 
+}
 */
-
 function randomize(b1, chars){
   
   let newRand = Math.floor(Math.random() * chars.length);
   
   if (chars[newRand] === b1){
     newRand--;
-    console.log("DUPLICATE");
     if (newRand < 0){
       newRand = chars.length - 1;
-      console.log("ROLLOVER UP");
     }
 
   }
@@ -42,16 +26,27 @@ function randomize(b1, chars){
 
 function App() {
   
+  window.onload = function(){
+    document.getElementById("score").style.visibility = "hidden";
+    document.getElementById("ID_Game").style.visibility = "hidden";
+    document.getElementById("ID_GameOver").style.visibility = "hidden";
+    document.getElementById("ID_Game").style.display = "block";
+  
+  };
+
+  //document.getElementById("GameOverTxt").style.display = "none";
+  
   const chars = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
   let [current, setCurrent] = useState(""); //NEW DISPLAYED CHAR
-  let buffer1 = "";
-  let [buffer2, setbuffer2] = useState(""); //CORRECT CHAR
-  const [input, setInput] = useState(""); //MY INPUT
+  let [buffer1, setBuffer1] = useState(""); 
+  let [buffer2, setBuffer2] = useState(""); //CORRECT CHAR
+  let [buffer3, setBuffer3] = useState(""); //GAME OVER CORRECT
+  let [input, setInput] = useState(""); //MY INPUT
+
+  let [rank, setRank] = useState("");
 
   let newRand = Math.floor(Math.random() * chars.length);
   const [rand, generateChar] = useState(chars[newRand]);
-
-
 
 
 
@@ -64,49 +59,78 @@ function App() {
 
   const handleKeyDown = (event) => {
     const keyPressed = event.key;
-    
+    if (keyPressed === "Escape" || keyPressed === "Backspace" || keyPressed === "Delete"){
+      gameState = 2;
+      document.location.reload();
+    }
     //GameState 0 = Menu
     if (gameState === 0 && keyPressed === "Enter"){
       gameState = 1;
-      let hideOnStart = document.getElementById("ID_PressToStart");
-      hideOnStart.style.display = "none";
-      console.log("SET GAME STATE 1 : "+ gameState);
+      document.getElementById("ID_PressToStart").style.display = "none";
+      document.getElementById("ID_Game").style.visibility = "visible";
     }
     //GameState 1 = Game Started
-    else if (gameState === 1){
-      console.log("GAME STATE 1 ON PRESS");
+    if (gameState === 1){
       if (keyPressed != ""){
-        if (steps != null){
+        if (steps !== null){
           steps++;
-          console.log(steps);
 
-          
+          buffer3 = buffer2;
           buffer2 = buffer1;
           buffer1 = current;
           
           current = randomize(buffer1, chars);
 
-          console.log("curr:"+current);
-          console.log("b1:"+buffer1);
-          console.log("b2:"+buffer2);
-
-
           if (steps >= 2){
-            console.log("steps: "+steps);
-            setScore(steps - 2);
+            setScore(steps - 3);
           }
 
-          if (input != null){
-            setInput(keyPressed);
-          }
-
+          setInput(keyPressed);
+          setBuffer3(buffer3);
           setCurrent(current);
-          setbuffer2(buffer2);
+
+          if (steps === 1){
+            setRank("Memorize the first character, press [Any] key to continue");
+          }
+          else if (steps === 2){
+            setRank("Memorize the second character, press [Any] key to continue");
+          }
+          else if (steps === 3){
+            setRank("Memorize the third character, press the first character you memorized");
+          }
+          else if (steps === 4){
+            setRank("Memorize the forth character, press the second character you memorized");
+          }
+          else if (steps === 5){
+            setRank("And so on...");
+          }
+          else if (steps >= 6){
+            setRank("");
+          }
+
+          if (steps > 2){
+            document.getElementById("score").style.visibility = "visible";
+          }
+
+          if (steps > 3){    
+            if (keyPressed != buffer3){
+              if (keyPressed != buffer3.toUpperCase()){
+                gameState = 2;
+              }
+            }
+          }
         }
       }
     }
+      //GameState2 = Game Over
+  if (gameState === 2){
+    document.getElementById("ID_GameOver").style.visibility = "visible";
+    document.getElementById("ID_Game").style.display = "none";
+    document.getElementById("score").style.display = "none";
+    document.body.style.backgroundColor = "red";
   }
-    
+  }
+  
 
   useEffect(() =>  {
     document.addEventListener('keydown', handleKeyDown );
@@ -116,17 +140,31 @@ function App() {
     <div className="App">
 
       <div id="ID_PressToStart">
+        <div className="Title">Two Steps Behind</div>
         <div className="App-header">Press [Enter] to start</div>
+        
+        <div className="MenuDescription"> Once you press [Enter] to start; a random character from the alphabet will show up. </div>
+        <div className="MenuDescription"> Memorize it and press [Any] key to continue. </div>
+        <div className="MenuDescription"> Once you continue, another random character will show up. </div>
+        <div className="MenuDescription"> Memorize that one too and press [Any] key to continue. </div>
+        <div className="MenuDescription"> On the third character; you'll need to memorize that one aswell, </div>
+        <div className="MenuDescription"> but to continue from here, you'll need to think "Two Steps Behind" and </div>
+        <div className="MenuDescription"> press the first character you had to memorize. </div>
+        <div className="MenuDescription"> If you succeed in doing so, a new character will show up. </div>
+        <div className="MenuDescription"> As always, memorize it, and press the character you saw Two Steps Behind. </div>
+        <div className="MenuDescription"> And so on... </div>
       </div>
+
       <div id="ID_Game">
-          <div className="App-header" id="info"></div>
-          <div className="App-header" id="char">"study:" {current.toUpperCase()}</div>
-          <div className="App-header" id="input">"count dracula:" {input.toUpperCase()}</div>
-          <div className="App-header" id="score">{score}</div>
+          <div className="GameRank" id="rank">{rank}</div>
+          <div className="GameChar" id="char">{current.toUpperCase()}</div>
       </div>
+      <div id="score" className="GameScore">Score: {score}</div>
+
       <div id="ID_GameOver">
-        <div className="App-header">Game Over!</div>
-        <div className="App-header">You Pressed [{input.toUpperCase()}], Correct [{buffer2.toUpperCase()}]</div>
+        <div className="GameOverInfo">You Pressed [{input.toUpperCase()}], Correct [{buffer3.toUpperCase()}]</div>
+        <div className="GameOverTxt">Game Over!</div>
+        <div className="GameOverInfo">Score : {score}</div>
       </div>
     </div>
     

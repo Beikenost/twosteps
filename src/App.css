@@ -1,21 +1,17 @@
-.App {
-  text-align: center;
+body
+{
+    background-color: #282c34;
+    height: 100%;
+    width: 100%;
+    background-position: 90% 90%;
+    background-size: 1920px 1200px;
+    overflow-y: hidden;  
+    position: fixed;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 40vh;
+.App-header
+{
+  min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,15 +20,88 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+
+
+.Title
+{
+  display: none;
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 10vmin);
+  color: gold;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.MenuDescription
+{
+  min-height: 0.5vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(7px + 1vmin);
+  color: gray;
+  overflow:hidden;
+  opacity: 0.3;
+}
+
+.GameRank
+{
+  min-height: 8vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(4px + 2vmin);
+  color: gray;
+  opacity: 0.6;
+}
+.GameChar
+{
+  display: none;
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(70px + 15vmin);
+  color: gold;
+}
+.GameScore
+{
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+
+
+
+
+
+.GameOverTxt
+{
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(60px + 20vmin);
+  color: white;
+}
+.GameOverInfo
+{
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
